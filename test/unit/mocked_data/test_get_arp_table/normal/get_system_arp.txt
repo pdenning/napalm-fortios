@@ -1,0 +1,6 @@
+Address           Age(min)   Hardware Addr      Interface
+198.51.46.32      10          00:0a:00:0a:00:0a port1
+198.51.128.35     3          00:0a:00:0a:00:0a port2
+198.51.22.9       5          00:0a:00:0a:00:0a port3
+192.168.18.25     1          00:0a:00:0a:00:0a named-interface
+

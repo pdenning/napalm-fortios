@@ -226,6 +226,37 @@ class FortiOSDriver(NetworkDriver):
             'mac_address': None
         }
 
+    def get_arp_table(self):
+        """
+        Returns a list of arp entries on the device each entry will have the following keys:
+            * ip_address
+            * mac_address
+            * interface
+            * age
+        """        
+
+
+        cmd_data = self._execute_command_with_vdom('get system arp')
+
+        arp_table = []
+
+        for line in cmd_data:
+            arp_data = re.findall(r'^((?:[0-9]{1,3}.?){4})\s*([\d]*)\s*((?:[0-9,a-f]{2}[:]?){6})\s([\S]*)',line,re.M)
+
+        
+            for arp_entry in arp_data:
+                arp_record = {}
+                ip, age, mac, intf = arp_entry
+                arp_record['interface'] = intf
+                arp_record['mac'] = mac
+                arp_record['ip'] = ip
+                arp_record['age'] = float(age)
+
+                arp_table.append(arp_record)
+
+        return arp_table
+        
+
     def get_interfaces(self):
         cmd_data = self._execute_command_with_vdom('diagnose hardware deviceinfo nic',
                                                    vdom='global')

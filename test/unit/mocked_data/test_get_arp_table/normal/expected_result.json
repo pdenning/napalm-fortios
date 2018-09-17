@@ -1,0 +1,1 @@
+[{"interface": "port1", "mac": "00:0a:00:0a:00:0a", "ip":"198.51.46.32 ", "age": 10.0}, {"interface": "port2", "mac": "00:0a:00:0a:00:0a", "ip": "198.51.128.35 ", "age": 3.0}, {"interface": "port3", "mac": "00:0a:00:0a:00:0a", "ip": "198.51.22.9 ", "age": 5.0}, {"interface": "named-interface", "mac": "00:0a:00:0a:00:0a", "ip": "192.168.18.25 ", "age": 1.0}]
