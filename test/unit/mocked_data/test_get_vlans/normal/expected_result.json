@@ -1,0 +1,1 @@
+[{"name": "inside", "role": "prod", "vlan_id": 101, "description": "test description"}, {"name": "outside", "role": "prod", "vlan_id": 102, "description": ""}]

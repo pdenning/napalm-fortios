@@ -1,0 +1,10 @@
+config system interface
+    edit "index"
+        set vdom "Production"
+        set ip 192.168.209.1 255.255.255.240
+        set status up
+        set role dmz
+        set snmp-index 68
+        set interface "lacp-dmz-33-37"
+    next
+end

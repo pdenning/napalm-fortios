@@ -232,7 +232,6 @@ class FortiOSDriver(NetworkDriver):
             * ip_address
             * mac_address
             * interface
-            * age
         """        
 
 
@@ -255,6 +254,42 @@ class FortiOSDriver(NetworkDriver):
                 arp_table.append(arp_record)
 
         return arp_table
+
+    def get_vlans(self):
+        """
+        gets a list of vlans for the vdom
+        """
+        vlan_table = []
+        cmd_data = self._execute_command_with_vdom('get system interface')
+
+        for line in cmd_data:
+            interface_list = re.findall(r'(?:==\s\[\s([a-zA-Z0-9\-_]*)\s\])',line,re.M)
+
+            for intf_name in interface_list:
+                vlan_record = self._fetch_vlan_data(intf_name)
+                if vlan_record:
+                    vlan_table.append(vlan_record)
+
+        return vlan_table
+
+    def _fetch_vlan_data(self,interface_name):
+        record = {}
+        cmd_data = self._execute_command_with_vdom('show system interface {}'.format(interface_name))
+        record['name'] = interface_name
+        for line in cmd_data:
+            config_entry = re.findall(r'^\s*set\s(vlanid|role|description){1} "?([^"\n]*)"?',line)
+            for entry in config_entry:
+                attr, value = entry
+                if attr == 'vlanid':
+                    record['vlan_id'] = value
+                else:
+                    record[attr] = value
+                
+        if record.get('description') == None:
+            record['description'] = ""
+        if record.get('vlan_id') == None:
+            return None
+        return record    
         
 
     def get_interfaces(self):
