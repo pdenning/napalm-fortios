@@ -1,0 +1,11 @@
+config system interface
+    edit "index"
+        set vdom "Production"
+        set ip 192.168.209.1 255.255.255.240
+        set status up
+        set role prod
+        set snmp-index 68
+        set interface "port2"
+        set vlanid 102
+    next
+end
