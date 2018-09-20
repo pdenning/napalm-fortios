@@ -1,0 +1,47 @@
+config system interface
+    edit "port1"
+        set vdom "root"
+        set vlanforward enable
+        set type physical
+        set snmp-index 2
+        set speed 1000full
+    next
+    edit "port2"
+        set vdom "root"
+        set vlanforward enable
+        set type physical
+        set snmp-index 4
+        set speed 1000full
+    next
+   edit "mgmt1"
+        set vdom "root"
+        set ip 172.30.0.234 255.255.252.0
+        set allowaccess ping https ssh snmp http fgfm radius-acct probe-response
+        set vlanforward enable
+        set type physical
+        set dedicated-to management
+        set snmp-index 1
+        set trust-ip-1 172.28.18.0 255.255.255.0
+    edit "lacp"
+        set vdom "Vdom-A"
+        set type aggregate
+        set member "port1" "port2"
+        set description "Unused"
+        set role dmz
+        set snmp-index 7
+    edit "vlan-interface-33"
+        set vdom "Vdom-B"
+        set ip 172.16.33.1 255.255.255.0
+        set status down
+        set role dmz
+        set snmp-index 5
+        set interface "lacp"
+        set vlanid 33
+    edit "vlan-interface-34"
+        set vdom "Vdom-B"
+        set ip 172.16.34.1 255.255.255.0
+        set status down
+        set role dmz
+        set snmp-index 6
+        set interface "lacp"
+        set vlanid 34
