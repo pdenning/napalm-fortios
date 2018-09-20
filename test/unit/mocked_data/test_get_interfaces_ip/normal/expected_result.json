@@ -1,0 +1,34 @@
+{
+    "mgmt1": {
+        "ipv4": {
+            "198.51.100.17": {
+                "prefix_length": 22
+            }
+        },
+        "type": "physical"
+    },
+    "ipsec_tunnel": {
+        "ipv4": {
+            "169.254.100.1": {
+                "prefix_length": 32
+            }
+        },
+        "type": "tunnel"
+    },
+    "vlan-interface-33": {
+        "ipv4": {
+            "198.51.33.1": {
+                "prefix_length": 24
+            }
+        },
+        "type": "vlan"
+    },
+    "vlan-interface-34": {
+        "ipv4": {
+            "198.51.34.1": {
+                "prefix_length": 24
+            }
+        },
+        "type": "vlan"
+    }
+}

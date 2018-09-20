@@ -26,6 +26,7 @@ try:
 except ImportError:
     from napalm_base.base import NetworkDriver
 
+import ipaddress
 
 class FortiOSDriver(NetworkDriver):
     def __init__(self, hostname, username, password, timeout=60, optional_args=None):
@@ -290,7 +291,44 @@ class FortiOSDriver(NetworkDriver):
         if record.get('vlan_id') == None:
             return None
         return record    
+
+    def get_interfaces_ip(self)        :
+        """
+        gets a list of interface IP Addresses for the selected vdom
+
+        """
+
+        table = {}
+
+        cmd_data = self._execute_command_with_vdom('get system interface | grep -v ==')
+        pattern = r'(?:(\S*):\s(\S*)(?:\s(\S*)?)\s*)'
         
+        
+        table = {}
+        for row in cmd_data:
+            intf_data = re.findall(pattern,row,re.M)
+            intf_name, intf_type, ip = ['','','']
+            record = {}
+            for match in intf_data:
+                attr, value1, value2 = match
+                if attr == 'name':
+                    intf_name = value1
+                elif attr == 'type':
+                    intf_type = value1
+                elif attr == 'ip':
+                    ip = ipaddress.IPv4Interface('{}/{}'.format(value1,value2))
+
+            if ip != '':
+                ip_address = str(ip.ip)
+                if ip_address != '0.0.0.0':
+                    record['ipv4'] = {}
+                    record['ipv4'][ip_address] = {}
+                    record['ipv4'][ip_address]['prefix_length'] = ip.network.prefixlen
+                            
+                    table[intf_name] = record
+                    table[intf_name]['type'] = intf_type
+        
+        return table
 
     def get_interfaces(self):
         cmd_data = self._execute_command_with_vdom('diagnose hardware deviceinfo nic',
